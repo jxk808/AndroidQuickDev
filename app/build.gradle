@@ -1,0 +1,95 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace rootProject.android.applicationId
+
+    signingConfigs {
+        debug {
+//            storeFile file('../dianmao.jks')
+//            storePassword '123456'
+//            keyAlias 'dianmaoCP'
+//            keyPassword '123456'
+        }
+        release {
+//            storeFile file('../dianmao.jks')
+//            storePassword '123456'
+//            keyAlias 'dianmaoCP'
+//            keyPassword '123456'
+        }
+    }
+    compileSdk rootProject.android.compileSdk
+
+    defaultConfig {
+        applicationId rootProject.android.applicationId
+        minSdk rootProject.android.minSdk
+        targetSdk rootProject.android.targetSdk
+        versionCode rootProject.android.versionCode
+        versionName rootProject.android.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+
+    //Room官方建议：在`android`块中添加以下代码块，以从软件包中排除原子函数模块并防止出现警告
+    packagingOptions {
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
+}
+
+dependencies {
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation rootProject.depsLibs.coreKtx
+    implementation rootProject.depsLibs.appcompat
+    implementation rootProject.depsLibs.material
+    implementation rootProject.depsLibs.constraintlayout
+    implementation rootProject.depsLibs.liveDataKtx
+    implementation rootProject.depsLibs.viewModelKtx
+    implementation rootProject.depsLibs.navigationFragment
+    implementation rootProject.depsLibs.navigationUI
+    implementation rootProject.depsLibs.lifecycleCommon
+
+
+    implementation rootProject.depsLibs.multidex
+
+    implementation rootProject.depsLibs.gson
+
+    implementation rootProject.depsLibs.mmkv
+
+    implementation rootProject.depsLibs.aroutreApi
+    kapt rootProject.depsLibs.arouterCompiler
+
+    implementation project(path: ':lib_framework')
+    implementation project(path: ':lib_network')
+    implementation project(path: ':lib_common')
+
+}
